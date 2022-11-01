@@ -1,84 +1,63 @@
-function test():void {
+function test() {
     console.log('Hello World');
 }
-
-function replaceVowels( word: string, charToReplaceVowels: string ): string {
-
+function replaceVowels(word, charToReplaceVowels) {
     return word.length <= 2 ? word : word.replace(/a|e|i|o|u/gi, charToReplaceVowels);
 }
-
-function reverseWord( wordToReverse: string ): string {
-    let lastCharacter= '';
-    if (pontuationCharacterAtTheEnd( wordToReverse )) {
-        lastCharacter = wordToReverse[wordToReverse.length-1];
-        wordToReverse = wordToReverse.substring(0, wordToReverse.length-1);
+function reverseWord(wordToReverse) {
+    let lastCharacter = '';
+    if (pontuationCharacterAtTheEnd(wordToReverse)) {
+        lastCharacter = wordToReverse[wordToReverse.length - 1];
+        wordToReverse = wordToReverse.substring(0, wordToReverse.length - 1);
     }
-
     return wordToReverse.split('').reverse().join('') + lastCharacter;
 }
-
-const pontuationCharacters:string = '.!?,';
-
-function pontuationCharacterAtTheEnd( text: string ):boolean {
-    return pontuationCharacters.includes(
-        text[text.length-1]
-    );
+const pontuationCharacters = '.!?,';
+function pontuationCharacterAtTheEnd(text) {
+    return pontuationCharacters.includes(text[text.length - 1]);
 }
-
-function pontuationCharacterAtTheStart( text: string ): boolean {
+function pontuationCharacterAtTheStart(text) {
     return pontuationCharacters.includes(text[0]);
 }
-
-function shuffleWord( word: string ): string {
-
+function shuffleWord(word) {
     let lastCharacter = '';
-
-    if (pontuationCharacterAtTheEnd( word )) {
-        lastCharacter = word[word.length-1];
-        word = word.substring(0, word.length-1);
+    if (pontuationCharacterAtTheEnd(word)) {
+        lastCharacter = word[word.length - 1];
+        word = word.substring(0, word.length - 1);
     }
-
-    const originalWord  = word;
-    let shuffledWord    = word.split('').sort(() => Math.random() - 0.5).join('');
-
+    const originalWord = word;
+    let shuffledWord = word.split('').sort(() => Math.random() - 0.5).join('');
     shuffledWord += lastCharacter;
     return shuffledWord;
 }
-
-function lettersToNumbers( upperCasedWord: string ): string {
-
+function lettersToNumbers(upperCasedWord) {
     let changedWord = upperCasedWord;
-    changedWord = 
+    changedWord =
         changedWord
-        .replace(/A|Á|À|Â|Ã/gi, '4')
-        .replace(/E|É|È/gi, '3')
-        .replace(/I|Í|Ì/gi, '1')
-        .replace(/O|Ó|Ò/gi, '0')
-        .replace(/S/gi, '5')
-        .replace(/T/gi, '7');
+            .replace(/A|Á|À|Â|Ã/gi, '4')
+            .replace(/E|É|È/gi, '3')
+            .replace(/I|Í|Ì/gi, '1')
+            .replace(/O|Ó|Ò/gi, '0')
+            .replace(/S/gi, '5')
+            .replace(/T/gi, '7');
     return changedWord;
 }
-
-function asciiLettersAndSpaceCharsOnly(stringToEncript: string): string {
+function asciiLettersAndSpaceCharsOnly(stringToEncript) {
     let onlyAsciiLettersMessage = '';
-
     onlyAsciiLettersMessage =
         stringToEncript
-        .replace(/á|à|â|ã/gi, 'a')
-        .replace(/é|è/gi, 'e')
-        .replace(/í|ì/gi, 'i')
-        .replace(/ó|ò|ô/gi, 'o')
-        .replace(/ú/gi, 'u')
-        .replace(/ç/gi, 'c')
-        .replace(/-/gi, ' ')
-        .replace(/[^A-Za-z]/gi, ' ')
-        .trim();
-
+            .replace(/á|à|â|ã/gi, 'a')
+            .replace(/é|è/gi, 'e')
+            .replace(/í|ì/gi, 'i')
+            .replace(/ó|ò|ô/gi, 'o')
+            .replace(/ú/gi, 'u')
+            .replace(/ç/gi, 'c')
+            .replace(/-/gi, ' ')
+            .replace(/[^A-Za-z]/gi, ' ')
+            .trim();
     return onlyAsciiLettersMessage;
 }
-
-function translateLetterToNATOAlphabet( letter: string ): string {
-
+function translateLetterToNATOAlphabet(letter) {
     const translationObject = {
         a: 'Alpha',
         b: 'Bravo',
@@ -107,111 +86,76 @@ function translateLetterToNATOAlphabet( letter: string ): string {
         y: 'Yankee',
         z: 'Zulu'
     };
-
     return translationObject[letter.toLowerCase()];
 }
-
-function translateLetterToNATOAlphabetFullText( originalText: string): string {
+function translateLetterToNATOAlphabetFullText(originalText) {
     const simplefiedText = asciiLettersAndSpaceCharsOnly(originalText);
-
     let fullText = '';
     let words = simplefiedText.split(' ');
-    const wordsLength  = words.length;
-
+    const wordsLength = words.length;
     for (let i = 0; i < wordsLength; i++) {
         const eachWord = words[i];
-        eachWord.split("").forEach( (letter) => {
+        eachWord.split("").forEach((letter) => {
             fullText += translateLetterToNATOAlphabet(letter) + '\n';
         });
-
         fullText += '\n';
     }
-
     return fullText;
 }
-
-function asciiLettersWordToLetterPositionsInAlphabeth( word: string): string {
+function asciiLettersWordToLetterPositionsInAlphabeth(word) {
     const alphabeth = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const wordLength = word.length;
-
     let postionsStr = "";
-
-    for (let i = 0; i < wordLength; i++ ) {
+    for (let i = 0; i < wordLength; i++) {
         postionsStr += alphabeth.indexOf(word[i]) + 1;
-
-        if (i < (wordLength-1) ) {
+        if (i < (wordLength - 1)) {
             postionsStr += '-';
         }
-
-
     }
-
     return postionsStr;
 }
-
-function asciiLettersWordToLetterPositionsInAlphabethFullText( originalText: string): string {
-
+function asciiLettersWordToLetterPositionsInAlphabethFullText(originalText) {
     const key = 'A --> 1\nB --> 2\n   ...\nZ --> 26';
     const simplefiedText = asciiLettersAndSpaceCharsOnly(originalText);
-
     let fullText = key + '\n\n';
-
-    simplefiedText.split(" ").forEach( (word) => {
-        fullText += asciiLettersWordToLetterPositionsInAlphabeth(word) + '\n'
+    simplefiedText.split(" ").forEach((word) => {
+        fullText += asciiLettersWordToLetterPositionsInAlphabeth(word) + '\n';
     });
-
-
     return fullText;
 }
-
-function randomIntegerBetweenXandY(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min) ) + min;
+function randomIntegerBetweenXandY(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
-
-function wordToWordPuzzleRow( asciiLettersWord: string, numberOfLettersInTheRow: number): string {
+function wordToWordPuzzleRow(asciiLettersWord, numberOfLettersInTheRow) {
     const alphabeth = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lastIndexWereWordCanStart = numberOfLettersInTheRow - asciiLettersWord.length;
     const numberOfPostionsToFillInRow = lastIndexWereWordCanStart;
     const numberOfLettersBeforeWord = randomIntegerBetweenXandY(0, numberOfPostionsToFillInRow);
     const numberOfLettersAfterWord = numberOfPostionsToFillInRow - numberOfLettersBeforeWord;
-
     let wordWithLettersBeforeAndAfter = "";
-    for (let i = 1; i <= numberOfLettersBeforeWord; i++ ) {
+    for (let i = 1; i <= numberOfLettersBeforeWord; i++) {
         const indexOfRandomLetter = randomIntegerBetweenXandY(0, 25);
         wordWithLettersBeforeAndAfter += alphabeth[indexOfRandomLetter];
     }
-
     wordWithLettersBeforeAndAfter += asciiLettersWord;
-
-    for (let i = 1; i <= numberOfLettersAfterWord; i++ ) {
+    for (let i = 1; i <= numberOfLettersAfterWord; i++) {
         const indexOfRandomLetter = randomIntegerBetweenXandY(0, 25);
         wordWithLettersBeforeAndAfter += alphabeth[indexOfRandomLetter];
     }
-
-
     return wordWithLettersBeforeAndAfter;
 }
-
-function textToWordPuzzle(originalText: string, numberOfPaddingLetters: number): string {
-
+function textToWordPuzzle(originalText, numberOfPaddingLetters) {
     const simplefiedText = asciiLettersAndSpaceCharsOnly(originalText);
     const words = simplefiedText.split(' ');
     const lengthOfBiggestWord = Math.max(...words.map((word) => word.length));
-
     let wordPuzzleFullText = '';
     const lengthOfRow = lengthOfBiggestWord + numberOfPaddingLetters;
-
     words.forEach((word) => {
-        wordPuzzleFullText += wordToWordPuzzleRow(word, lengthOfRow) + '\n'
+        wordPuzzleFullText += wordToWordPuzzleRow(word, lengthOfRow) + '\n';
     });
-
-
     return wordPuzzleFullText;
 }
-
-
-function initializeCellPhoneStr(): string {
-
+function initializeCellPhoneStr() {
     const cellPhoneStr = `
 <pre>
 <code>
@@ -236,178 +180,163 @@ function initializeCellPhoneStr(): string {
 </code>
 </pre>
 <pre id="encrypted"></pre>`;
-
     return cellPhoneStr;
 }
-
-
-function retroCellphoneEncription( stringToEncript: string ): string {
-
+function retroCellphoneEncription(stringToEncript) {
     const letters = 'abcdefghijklmnopqrstuvwxyz ';
-
-    const abc2  = '2abc';
-    const def3  = '3def';
-    const ghi4  = '4ghi';
-    const jkl5  = '5jkl';
-    const mno6  = '6mno';
+    const abc2 = '2abc';
+    const def3 = '3def';
+    const ghi4 = '4ghi';
+    const jkl5 = '5jkl';
+    const mno6 = '6mno';
     const pqrs7 = '7pqrs';
-    const tuv8  = '8tuv';
+    const tuv8 = '8tuv';
     const wxyz9 = '9wxyz';
-    const _0    = '0 ';
-
+    const _0 = '0 ';
     let encriptedString = "";
-
-    stringToEncript.toLowerCase().split('').forEach( (char) => {
-        let key = ''
+    stringToEncript.toLowerCase().split('').forEach((char) => {
+        let key = '';
         let numberOfKeyPresses = 0;
-        if ( letters.includes(char) ) {
-            if (abc2.includes(char) ) { key = abc2[0]; numberOfKeyPresses = abc2.indexOf(char) }
-            if (def3.includes(char) ) { key = def3[0]; numberOfKeyPresses = def3.indexOf(char) }
-            if (ghi4.includes(char) ) { key = ghi4[0]; numberOfKeyPresses = ghi4.indexOf(char) }
-            if (jkl5.includes(char) ) { key = jkl5[0]; numberOfKeyPresses = jkl5.indexOf(char) }
-            if (mno6.includes(char) ) { key = mno6[0]; numberOfKeyPresses = mno6.indexOf(char) }
-            if (pqrs7.includes(char)) { key = pqrs7[0]; numberOfKeyPresses = pqrs7.indexOf(char) }
-            if (tuv8.includes(char) ) { key = tuv8[0]; numberOfKeyPresses = tuv8.indexOf(char) }
-            if (wxyz9.includes(char)) { key = wxyz9[0]; numberOfKeyPresses = wxyz9.indexOf(char) }
+        if (letters.includes(char)) {
+            if (abc2.includes(char)) {
+                key = abc2[0];
+                numberOfKeyPresses = abc2.indexOf(char);
+            }
+            if (def3.includes(char)) {
+                key = def3[0];
+                numberOfKeyPresses = def3.indexOf(char);
+            }
+            if (ghi4.includes(char)) {
+                key = ghi4[0];
+                numberOfKeyPresses = ghi4.indexOf(char);
+            }
+            if (jkl5.includes(char)) {
+                key = jkl5[0];
+                numberOfKeyPresses = jkl5.indexOf(char);
+            }
+            if (mno6.includes(char)) {
+                key = mno6[0];
+                numberOfKeyPresses = mno6.indexOf(char);
+            }
+            if (pqrs7.includes(char)) {
+                key = pqrs7[0];
+                numberOfKeyPresses = pqrs7.indexOf(char);
+            }
+            if (tuv8.includes(char)) {
+                key = tuv8[0];
+                numberOfKeyPresses = tuv8.indexOf(char);
+            }
+            if (wxyz9.includes(char)) {
+                key = wxyz9[0];
+                numberOfKeyPresses = wxyz9.indexOf(char);
+            }
         }
-        
-
         for (let i = 1; i <= numberOfKeyPresses; i++) {
-            encriptedString += key
+            encriptedString += key;
         }
-
         if (char !== ' ') {
             encriptedString += '-';
-        } else {
-            encriptedString = encriptedString.substring(0, encriptedString.length-1);
+        }
+        else {
+            encriptedString = encriptedString.substring(0, encriptedString.length - 1);
             encriptedString += ' ';
         }
-        
-
     });
-
-    encriptedString = encriptedString.substring(0, encriptedString.length-1);
-
+    encriptedString = encriptedString.substring(0, encriptedString.length - 1);
     return encriptedString;
-
 }
-
-
 // VOWELS TO AIX ENDER INIX OVER UFUX
-function aixToUfux( word:string ): string {
-
+function aixToUfux(word) {
     const key = 'A --> AIX \ta --> aix\nE --> ENDER \te --> ender\nI --> INIX \ti --> inix\nO --> OVER \to --> over\nU --> UFUX \tu --> ufux\n\n';
-
     let changedWord = '';
-
-    for ( let i = 0; i < word.length; i++) {
-        switch(word[i]) {
-
+    for (let i = 0; i < word.length; i++) {
+        switch (word[i]) {
             case 'a':
             case 'á':
             case 'à':
             case 'â':
             case 'ã':
-            changedWord += 'aix';
+                changedWord += 'aix';
                 break;
             case 'A':
             case 'Á':
             case 'À':
             case 'Â':
             case 'Ã':
-            changedWord += 'AIX';
+                changedWord += 'AIX';
                 break;
-            
             case 'e':
             case 'é':
             case 'è':
-            changedWord += 'ender';
+                changedWord += 'ender';
                 break;
             case 'E':
             case 'É':
             case 'È':
-            changedWord += 'ENDER';
+                changedWord += 'ENDER';
                 break;
-            
             case 'i':
             case 'í':
             case 'ì':
-            changedWord += 'inix';
+                changedWord += 'inix';
                 break;
             case 'I':
             case 'Í':
             case 'Ì':
-            changedWord += 'INIX';
+                changedWord += 'INIX';
                 break;
-            
             case 'o':
             case 'ó':
             case 'ò':
-            changedWord += 'over';
+                changedWord += 'over';
                 break;
             case 'O':
             case 'Ó':
             case 'Ò':
-            changedWord += 'OVER';
+                changedWord += 'OVER';
                 break;
-            
             case 'u':
-            changedWord += 'ufux';
+                changedWord += 'ufux';
                 break;
             case 'U':
-            changedWord += 'UFUX';
+                changedWord += 'UFUX';
                 break;
-            
             default:
-            changedWord += word[i];
+                changedWord += word[i];
                 break;
         }
     }
-
     return key + changedWord;
 }
-
-function returnToDefaultVogals( word ) {
-
+function returnToDefaultVogals(word) {
     let changedWord = word;
-    changedWord = 
+    changedWord =
         changedWord
-        .replace(/AIX/gi, 'A')
-        .replace(/aix/gi, 'a')
-
-        .replace(/ENDER/gi, 'E')
-        .replace(/ender/gi, 'e')
-
-        .replace(/INIX/gi, 'I')
-        .replace(/inix/gi, 'i')
-
-        .replace(/OVER/gi, 'O')
-        .replace(/over/gi, 'o')
-        
-        .replace(/UFUX/gi, 'U')
-        .replace(/ufux/gi, 'u')
-
+            .replace(/AIX/gi, 'A')
+            .replace(/aix/gi, 'a')
+            .replace(/ENDER/gi, 'E')
+            .replace(/ender/gi, 'e')
+            .replace(/INIX/gi, 'I')
+            .replace(/inix/gi, 'i')
+            .replace(/OVER/gi, 'O')
+            .replace(/over/gi, 'o')
+            .replace(/UFUX/gi, 'U')
+            .replace(/ufux/gi, 'u');
     return changedWord;
 }
-
-
 // export { 
 //     test,
 //     pontuationCharacterAtTheEnd,
 //     letterToNumbers
 // };
-
 test();
-
 // tsc confusionism_module.ts --target es6
 // node confusionism_module.js
-
 // console.log(retroCellphoneEncription("I have something to say"));
 // console.log(asciiLettersAndSpaceCharsOnly("Mão com açentos é TÓTÓ"));
 // console.log(lettersToNumbers("QUERIA POR A MINHA MAO NO TEU CU"));
 // console.log(translateLetterToNATOAlphabet("S"));
 // console.log(asciiLettersWordToLetterPositionsInAlphabeth("EU SIGO A TUA CONTA SO PARA VER COMO ALGUEM JOVEM PENSA MAS TU ES REALMENTE ABORRECIDA"));
-
 // console.log(wordToWordPuzzleRow("ISSO", 10));
 // console.log(wordToWordPuzzleRow("DA", 10));
 // console.log(wordToWordPuzzleRow("UM", 10));
@@ -415,20 +344,10 @@ test();
 // console.log(wordToWordPuzzleRow("IMENSO", 10));
 // console.log(wordToWordPuzzleRow("AOS", 10));
 // console.log(wordToWordPuzzleRow("HOMENS", 10));
-
-
-
 // console.log(asciiLettersWordToLetterPositionsInAlphabethFullText("EU SIGO A TUA CONTA SO PARA VER COMO ALGUEM JOVEM PENSA MAS TU ES REALMENTE ABORRECIDA"));
 // console.log(translateLetterToNATOAlphabetFullText("ALGUMA VEZ QUISESTE DIZER ALGO MAS NAO SABIAS COMO"));
 // console.log(retroCellphoneEncription("ALGUMA VEZ QUISESTE DIZER ALGO MAS NAO SABIAS COMO"));
-
 // console.log(textToWordPuzzle("ALGUMA VEZ QUISESTE DIZER ALGO MAS NAO SABIAS COMO", 10));
-
-
-
-
-
-
 const reversed_certain_words = [
     "c1g2",
     "e5r4",
@@ -3889,23 +3808,18 @@ const reversed_certain_words = [
     "ailihpooz",
     "bbuz"
 ];
-
-
 const testObj = {};
 reversed_certain_words.forEach((word) => {
     testObj[word] = [];
 });
-
 // const keysWithEmojiTranslationsObj = {
 //     "ssa": "🍑",
 //     "kcid": "🍆",
 //     "hctib": "👩🐶"
 // };
-
 // Object.keys(keysWithEmojiTranslationsObj).forEach((key) => {
 //     reversed_certain_words[key].push(keysWithEmojiTranslationsObj[key]);
 // });
-
 testObj["ssa"].push("🍑");
 testObj["kcid"].push("🍆");
 testObj["hctib"].push("👩🐶");

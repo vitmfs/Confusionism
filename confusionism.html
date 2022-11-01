@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://html2canvas.hertzen.com/dist/html2canvas.min.js'></script>
+    <script src='./confusionism_module.js'></script>
+    <style>
+        body {
+            height: 100%;
+            width: 99%;
+            background-color: aqua;
+        }
+
+        textarea {
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <textarea name="original_message_ta" id="original_message_ta" cols="30" rows="10" title="Original Text">
+    </textarea>
+
+    <textarea name="letters_to_numbers_ta" id="letters_to_numbers_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="aix_to_ufux_ta" id="aix_to_ufux_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="blender_ta" id="blender_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="reverse_ta" id="reverse_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="words_reversed_ta" id="words_reversed_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="replaced_vowels_ta" id="replaced_vowels_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="nato_ta" id="nato_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="letters_index_ta" id="letters_index_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="word_puzzle_ta" id="word_puzzle_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea name="no_certain_words_ta" id="no_certain_words_ta" cols="30" rows="10" disabled>
+    </textarea>
+
+    <textarea cols="30" rows="10" disabled>
+    </textarea>
+
+
+
+<div id="clues_and_message" style="width: max-content;padding: 15px; padding-bottom: 30px; clear: both;"">
+    
+</div><br />
+    <button id="generate_retro_cellphone_encryption_button" onclick="generateRetroCellPhoneEncrypterImage( document.getElementById('original_message_ta').value )">OK</button>
+
+
+
+    <script>
+
+        function generateRetroCellPhoneEncrypterImage( stringToEncript ) {
+
+            stringToEncript = asciiLettersAndSpaceCharsOnly(stringToEncript);
+
+            document.getElementById('clues_and_message').innerHTML = initializeCellPhoneStr();
+            retroCellphoneEncription( stringToEncript ).split(' ').forEach( (word) => {
+                document.getElementById('encrypted').innerHTML += '<p>'+ word + '</p>'
+            });
+
+            html2canvas(document.querySelector("#clues_and_message")).then(canvas => {
+                canvas.title = `Image for the encrypted message from:\n${stringToEncript}`;
+                document.body.appendChild(canvas)
+            });
+
+            document.getElementById('clues_and_message').style.display = 'none';
+
+        }
+
+        //document.getElementById("generate_retro_cellphone_encryption_button").addEventListener("click", generateRetroCellPhoneEncrypterImage);
+        // GET REFERENCES TO TEXTAREAS
+        const originalMessageTA = document.getElementById('original_message_ta');
+
+        const aixToUfuxTA = document.getElementById('aix_to_ufux_ta');
+        const scrambleWordsTA = document.getElementById('blender_ta');
+        const reversedMessageTA = document.getElementById('reverse_ta');
+        const wordsReversedTA = document.getElementById('words_reversed_ta');
+        const replacedVowelsTA = document.getElementById('replaced_vowels_ta');
+        const lettersToNumbersTA = document.getElementById('letters_to_numbers_ta');
+        const natoAlphabethTA = document.getElementById('nato_ta');
+        const lettersIndexTA = document.getElementById('letters_index_ta');
+        const wordPuzzleTA = document.getElementById('word_puzzle_ta');
+        const noCertainWordsTA = document.getElementById('no_certain_words_ta'); 
+
+        // FOR EACH KEYUP EVENT CHANGE THE TEXT IN ENCRYPTED TEXT TEXTAREAS
+        originalMessageTA.addEventListener('keyup', (event) => {
+
+            const initialText = originalMessageTA.value;
+            const upperCasedText = initialText.toUpperCase();
+
+            lettersToNumbersTA.value = lettersToNumbers( upperCasedText );
+            aixToUfuxTA.value = aixToUfux( initialText );
+            reversedMessageTA.value = initialText.split('').reverse().join('');
+            natoAlphabethTA.value = translateLetterToNATOAlphabetFullText(initialText);
+            lettersIndexTA.value = asciiLettersWordToLetterPositionsInAlphabethFullText(initialText.toUpperCase());
+            wordPuzzleTA.value = textToWordPuzzle(initialText.toUpperCase(), 5);
+            
+
+            // generateRetroCellPhoneEncrypterImage( initialText );
+
+            replacedVowelsTA.value = '';
+            scrambleWordsTA.value = '';
+            wordsReversedTA.value = '';
+            noCertainWordsTA.value = '';
+            // natoAlphabethTA.value = '';
+            noCertainWordsTA.value = '';
+
+
+            let reversedWordTAText = '';
+            
+            // SEPARATE WORDS
+            initialText.split(' ').forEach( (word) => {
+
+                // SUFFLE WORD
+                let suffledWord = shuffleWord( word );
+                if (word.length >= 2 && word === suffledWord ) {
+                    while (word === suffledWord) {
+                        suffledWord = shuffleWord( word );
+                    }
+                }
+
+                scrambleWordsTA.value += suffledWord + ' ';
+                wordsReversedTA.value += reverseWord(word) + ' ';
+                replacedVowelsTA.value += replaceVowels(word, '*' ) + ' ';
+
+                // IF CERTAIN WORD
+                // if (reversed_certain_words.includes(word.split('').reverse().join(''))) {
+                //     noCertainWordsTA.value += '📚' + ' ';
+                // } else {
+                //     noCertainWordsTA.value += word + ' ';
+                // }
+
+                if (testObj[word.toLowerCase().split('').reverse().join('')]) {
+                    noCertainWordsTA.value += testObj[word.toLowerCase().split('').reverse().join('')] + ' ';
+                    // alert(testObj[word.toLowerCase().split('').reverse().join('')]);
+                } else {
+                    noCertainWordsTA.value += word + ' ';
+                }
+
+                
+
+            });
+
+            reversedMessageTA.value = reversedMessageTA.value.trim();
+
+        });
+
+        
+
+        
+
+
+
+        // const originalStringToEncript = prompt('Insert a message only with\nsimple letters separated by spaces:');
+
+        // let stringToEncript = originalStringToEncript || '';
+
+        // stringToEncript = asciiLettersAndSpaceCharsOnly(stringToEncript);
+        
+        // document.getElementById('clues_and_message').innerHTML = initializeCellPhoneStr();
+
+        // retroCellphoneEncription( stringToEncript ).split(' ').forEach( (word) => {
+        //     document.getElementById('encrypted').innerHTML += '<p>'+ word + '</p>'
+        // });
+
+        // html2canvas(document.querySelector("#clues_and_message")).then(canvas => {
+        //     canvas.title = `Image for the encrypted message from:\n${originalStringToEncript}`;
+        //     document.body.appendChild(canvas)
+        // });
+
+        // document.getElementById('clues_and_message').style.display = 'none';
+    </script>
+    
+</body>
+</html>
